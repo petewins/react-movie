@@ -1,4 +1,14 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Lab: Final Project
+- A react application
+- With 3 components
+- At least 1 component must be a functional component
+- At least 1 component must be a class component
+- There should be at least 1 API/firebase call
+- There need to be at least 3 events handled
+- There should be at least 1 map inside of a render method
+
+api_key = 'ea748c83b9eee174d5714961ec938fff';
+news_apikey = 'f6d2d6210efa415387ea117a6c090666';
 
 ## Available Scripts
 
