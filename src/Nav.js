@@ -69,7 +69,7 @@ class Nav extends Component {
         <div className="row flex-nowrap justify-content-between align-items-center">
           <div className="col-auto ">
             <Link className="blog-header-logo text-dark" to="/">
-              RMDB
+              Film Search
             </Link>
           </div>
           <div className="col-10 d-flex justify-content-start align-items-left">
@@ -142,9 +142,9 @@ const MovieMenuItem = ({ movie }) => {
           width: '65px'
         }}
       />
-      <span>
+      <small>
         <b> {movie.title} </b> ({movie.year})
-      </span>
+      </small>
     </div>
   );
 };

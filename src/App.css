@@ -4,7 +4,7 @@
 }
 
 .blog-header-logo {
-  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-family: '', 'Helvetica', Georgia, 'Times New Roman', serif;
   font-size: 2.25rem;
 }
 
@@ -18,7 +18,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-family: 'Anton', sans-serif;
 }
 
 .display-4 {

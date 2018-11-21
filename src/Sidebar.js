@@ -7,11 +7,14 @@ class Sidebar extends Component {
 
     // add stars from cache to opening week, needs optimization for the loops
     if (this.props.upcoming.length > 0) {
+      console.log('cachehceck')
       let upcoming = this.props.upcoming;
       upcoming.forEach((movie, index) => {
         this.props.watchlist.find(movie2 => {
           if (movie.id === movie2.id) {
             upcoming[index].iconClass = 'fas fa-star';
+          } else {
+            // upcoming[index].iconClass = 'far fa-star';
           }
           return false;
         })
@@ -24,26 +27,29 @@ class Sidebar extends Component {
     let watchlist = this.props.watchlist;
     let upcoming = this.props.upcoming;
     if (!upcomingListIndex) {
-      upcoming.some((mov, i) => {
+      upcoming.forEach((mov, i) => {
         if (mov.id === movie.id) {
           upcomingListIndex = i;
+          console.log(upcomingListIndex);
         }
-        return mov.id === movie.id;
       });
     }
     let index;
-    if (
-      watchlist.some((mov, i) => {
-        if (mov.id === movie.id) {
-          index = i;
-        }
-        return mov.id === movie.id;
-      })
-    ) {
-      upcoming[upcomingListIndex].iconClass = 'far fa-star';
+    watchlist.forEach((mov, i) => {
+      if (mov.id === movie.id) {
+        index = i;
+      }
+    }
+    );
+    if (index) {
       watchlist.splice(index, 1);
+      if (upcomingListIndex != undefined) {
+        upcoming[upcomingListIndex].iconClass = 'far fa-star';
+      }
     } else {
-      upcoming[upcomingListIndex].iconClass = 'fas fa-star';
+      if (upcomingListIndex != undefined) {
+        upcoming[upcomingListIndex].iconClass = 'fas fa-star';
+      }
       watchlist.push(movie);
     }
     this.props.updateState({ watchlist, upcoming });

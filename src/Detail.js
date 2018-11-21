@@ -48,8 +48,9 @@ class Detail extends Component {
   handleStarClick = () => {
     let watchlist = this.props.watchlist;
     let detail = this.state.detail;
+    console.log(watchlist)
     if (!watchlist.some((movie) => movie.id === detail.id)) {
-      watchlist.push({ id: detail.id, title: detail.title });
+      watchlist.push({ id: detail.id, title: detail.title, iconClass: "fas fa-star" });
       this.props.updateState({ watchlist });
       localStorage.setItem("watchlist", JSON.stringify(watchlist));
       this.setState({ saved: true })
@@ -74,6 +75,7 @@ class Detail extends Component {
         for (let i = 0; i < length; i++) {
           cast.push(movie.credits.cast[i].name);
         }
+        console.log(movie);
         let detail = {
           id: movie.id,
           title: movie.title,
@@ -86,7 +88,8 @@ class Detail extends Component {
               : null,
           image: 'https://image.tmdb.org/t/p/w200' + movie.poster_path,
           overview: movie.overview,
-          cast: cast.join(', ')
+          cast: cast.join(', '),
+          date: movie.release_date
         };
         this.setState({ detail });
         console.log(movie, this.state);
@@ -117,11 +120,16 @@ class Detail extends Component {
       <div>
         <div className="title-area d-flex bg-dark text-light p-3">
           <i onClick={this.handleStarClick} title="add to watchlist" className={starred + ' text-warning pr-3 align-self-center cursor-pointer'} style={{ fontSize: "2rem" }}></i>
-          <div>
-            <h2 className="m-0">{movie.title}</h2>
+          <div className="d-flex flex-column">
+            <h2 className="m-0">{movie.title}
+            </h2>
             <span>{movie.genre}</span>
+            <span className="text-white"> {movie.date} </span>
+
           </div>
-          <span className="detail-rating ml-auto"> {movie.rating}/<small>10</small> </span>
+          <div className="ml-auto pr-3 d-flex flex-column ">
+            <span className="detail-rating "> {movie.rating}/<small>10</small> </span>
+          </div>
         </div>
         <div className="d-flex bg-dark">
           <img alt="poster" src={movie.image} className="mr-2 detail-poster" />
