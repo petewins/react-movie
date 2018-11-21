@@ -182,7 +182,7 @@ class Detail extends Component {
         </div>
         <div className="blog-post" style={displayNews}>
           <h2 className="blog-post-title">
-            Related News <small>(maybe)</small>
+            Related News
           </h2>
           <hr />
           <News articles={this.state.articles} />
