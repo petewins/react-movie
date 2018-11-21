@@ -2,15 +2,33 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 class Sidebar extends Component {
-  updateWatchlist = (movie, upcomingIndex) => {
+
+  componentDidUpdate() {
+
+    // add stars from cache to opening week, needs optimization for the loops
+    if (this.props.upcoming.length > 0) {
+      let upcoming = this.props.upcoming;
+      upcoming.forEach((movie, index) => {
+        this.props.watchlist.find(movie2 => {
+          if (movie.id === movie2.id) {
+            upcoming[index].iconClass = 'fas fa-star';
+          }
+          return false;
+        })
+      });
+    }
+  }
+
+
+  updateWatchlist = (movie, upcomingListIndex) => {
     let watchlist = this.props.watchlist;
     let upcoming = this.props.upcoming;
-
-    if (!upcomingIndex) {
+    if (!upcomingListIndex) {
       upcoming.some((mov, i) => {
         if (mov.id === movie.id) {
-          upcomingIndex = i;
+          upcomingListIndex = i;
         }
+        return mov.id === movie.id;
       });
     }
     let index;
@@ -18,17 +36,18 @@ class Sidebar extends Component {
       watchlist.some((mov, i) => {
         if (mov.id === movie.id) {
           index = i;
-          return true;
         }
+        return mov.id === movie.id;
       })
     ) {
-      upcoming[upcomingIndex].iconClass = 'far fa-star';
+      upcoming[upcomingListIndex].iconClass = 'far fa-star';
       watchlist.splice(index, 1);
     } else {
-      upcoming[upcomingIndex].iconClass = 'fas fa-star';
+      upcoming[upcomingListIndex].iconClass = 'fas fa-star';
       watchlist.push(movie);
     }
     this.props.updateState({ watchlist, upcoming });
+    localStorage.setItem("watchlist", JSON.stringify(watchlist));
   };
   render() {
     return (

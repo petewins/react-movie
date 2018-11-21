@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import Nav from './Nav';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Playing from './Playing';
 import Detail from './Detail';
-// import { watch } from 'fs';
 import Sidebar from './Sidebar';
 
-let url =
-  'https://newsapi.org/v2/everything?q=%22in%20theatres%22&apiKey=f6d2d6210efa415387ea117a6c090666&language=en&sortby=publishedAt';
+// let url =
+//   'https://newsapi.org/v2/everything?q=%22in%20theatres%22&apiKey=f6d2d6210efa415387ea117a6c090666&language=en&sortby=publishedAt';
 
 class App extends Component {
   state = {
@@ -17,6 +16,18 @@ class App extends Component {
     upcoming: [],
     watchlist: []
   };
+
+  componentWillMount() {
+    if (typeof (Storage) !== "undefined") {
+      if (localStorage.getItem("watchlist")) {
+        let watchlist = JSON.parse(localStorage.getItem("watchlist"));
+        this.setState({ watchlist })
+      }
+      // Code for localStorage/sessionStorage.
+    } else {
+      // Sorry! No Web Storage support..
+    }
+  }
 
   componentDidMount() {
     this.getUpcoming();
@@ -44,7 +55,9 @@ class App extends Component {
                       <Playing nowPlaying={this.state.nowPlaying} />
                     )}
                   />
-                  <Route path="/detail" component={Detail} />
+                  <Route path="/detail" render={props => (
+                      <Detail watchlist={this.state.watchlist} updateState={this.updateState} />
+                    )} />
                 </Switch>
               </div>
               <Sidebar
@@ -62,7 +75,7 @@ class App extends Component {
               <a href="https://newsapi.org/"> newsapi </a>.
             </p>
             <p>
-              <a href="#">Back to top</a>
+              {/* <a href="#">Back to top</a> */}
             </p>
           </footer>
         </div>
@@ -77,7 +90,7 @@ class App extends Component {
       .then(resp => resp.json())
       .then(movies => {
         let upcoming = [];
-        movies.results.map(mov => {
+        movies.results.forEach(mov => {
           let movie = {};
           movie.id = mov.id;
           movie.title = mov.title;
@@ -96,7 +109,7 @@ class App extends Component {
       .then(resp => resp.json())
       .then(movies => {
         let nowPlaying = [];
-        movies.results.map(mov => {
+        movies.results.forEach(mov => {
           if (mov.poster_path) {
             let movie = {};
             movie.id = mov.id;

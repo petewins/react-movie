@@ -1,27 +1,65 @@
 import React, { Component } from 'react';
+import withRouter from 'react-router-dom/withRouter';
 
 class Detail extends Component {
   state = {
     detail: {
       id: null,
       title: null
-    }
+    },
+    saved: false
   };
 
-  componentDidUpdate() {
-    // console.log('updated');
-    // let id = this.props.location.pathname.slice(7).replace(/\//g, '');
-    // if (this.state.detail.id !== id) {
-    //   this.getMovieDetail(id);
-    // }
-  }
-  
-  componentDidMount() {
-    
-    let id = this.props.location.pathname.slice(7).replace(/\//g, '');
-    if (this.state.detail.id !== id) {
+
+  componentDidUpdate(prevProps) {
+    let oldId = prevProps.location.pathname;
+    let newId = this.props.location.pathname;
+    let id = newId.slice(7).replace(/\//g, '');
+    if (newId !== oldId) {
       this.getMovieDetail(id);
+      this.checkForWatchList(id);
     }
+
+    if ((newId == oldId) && !this.props.watchlist.some(movie => movie.id == id)) {
+      if (this.state.saved) {
+        this.checkForWatchList(id);
+      }
+    }
+
+    if (this.props.watchlist.some(movie => movie.id == id)) {
+      if (!this.state.saved) {
+        this.checkForWatchList(id);
+      }
+    }
+  }
+
+  checkForWatchList = (id) => {
+    let saved = this.props.watchlist.some(movie => movie.id == id);
+    this.setState({ saved });
+  }
+
+  componentDidMount() {
+    console.log(this.props);
+    let id = this.props.location.pathname.slice(7).replace(/\//g, '');
+    this.getMovieDetail(id);
+    this.checkForWatchList(id);
+  }
+
+  handleStarClick = () => {
+    let watchlist = this.props.watchlist;
+    let detail = this.state.detail;
+    if (!watchlist.some((movie) => movie.id === detail.id)) {
+      watchlist.push({ id: detail.id, title: detail.title });
+      this.props.updateState({ watchlist });
+      localStorage.setItem("watchlist", JSON.stringify(watchlist));
+      this.setState({ saved: true })
+    } else {
+      watchlist = watchlist.filter((movie) => detail.id !== movie.id);
+      this.props.updateState({ watchlist });
+      localStorage.setItem("watchlist", JSON.stringify(watchlist));
+      this.setState({ saved: false })
+    }
+
   }
 
   getMovieDetail = id => {
@@ -57,25 +95,49 @@ class Detail extends Component {
   };
 
   render() {
+    let starred = this.state.saved ? 'fas fa-star' : 'far fa-star';
+    let movie = this.state.detail;
+    let youtube;
+    let overview = (
+      <p>{movie.overview}</p>
+    )
+    if (movie.video) {
+      youtube = (
+        <div className="embed-container">
+          <iframe title="youtube" width="560" height="315" src={`https://www.youtube-nocookie.com/embed/${this.state.detail.video}?rel=0&amp;`} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+        </div>
+      )
+    } else {
+      youtube = movie.overview
+      overview = "";
+    }
+
     return (
-      <div className="row mb-2">
-        <div>
-          <div className="youtube-embed">
-            <iframe
-              allowFullScreen="allowFullScreen"
-              src={`https://www.youtube.com/embed/${
-                this.state.detail.video
-              }?ecver=1&amp;iv_load_policy=1&amp;rel=0&amp;showinfo=0&amp;yt:stretch=16:9&amp;autohide=1&amp;color=black&amp;width=560&amp;width=560`}
-              width="560"
-              height="315"
-              allowtransparency="true"
-              frameBorder="0"
-            />
+      // <div className="row mb-2">
+      <div>
+        <div className="title-area d-flex bg-dark text-light p-3">
+          <i onClick={this.handleStarClick} title="add to watchlist" className={starred + ' text-warning pr-3 align-self-center cursor-pointer'} style={{ fontSize: "2rem" }}></i>
+          <div>
+            <h2 className="m-0">{movie.title}</h2>
+            <span>{movie.genre}</span>
+          </div>
+          <span className="detail-rating ml-auto"> {movie.rating}/<small>10</small> </span>
+        </div>
+        <div className="d-flex bg-dark">
+          <img alt="poster" src={movie.image} className="mr-2 detail-poster" />
+          <div className="text-light" style={{ width: "100%", height: "100%" }}>
+            {youtube}
           </div>
         </div>
+        <div className="bg-grey my-3">
+          {overview}
+          <p><b>Starring:</b> {movie.cast}</p>
+          <p><b>Runtime:</b> {movie.runtime} mins</p>
+        </div>
       </div>
+      // </div>
     );
   }
 }
 
-export default Detail;
+export default withRouter(Detail);

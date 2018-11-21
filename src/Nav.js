@@ -15,15 +15,15 @@ class Nav extends Component {
     };
   }
 
-
-
   handleSubmit(event) {
     event.preventDefault();
   }
 
   handleChange = event => {
       let movie = event[0];
-      this.props.history.push('/detail/' + movie.id);
+      if (movie) {
+        this.props.history.push('/detail/' + movie.id);
+      }
     };
 
   handleInputChange = event => {
