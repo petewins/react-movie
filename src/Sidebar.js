@@ -41,13 +41,13 @@ class Sidebar extends Component {
       }
     }
     );
-    if (index) {
+    if (index !== undefined) {
       watchlist.splice(index, 1);
-      if (upcomingListIndex != undefined) {
+      if (upcomingListIndex !== undefined) {
         upcoming[upcomingListIndex].iconClass = 'far fa-star';
       }
     } else {
-      if (upcomingListIndex != undefined) {
+      if (upcomingListIndex !== undefined) {
         upcoming[upcomingListIndex].iconClass = 'fas fa-star';
       }
       watchlist.push(movie);

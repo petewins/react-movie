@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Nav from './Nav';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Playing from './Playing';
 import Detail from './Detail';
@@ -23,7 +23,6 @@ class App extends Component {
         let watchlist = JSON.parse(localStorage.getItem("watchlist"));
         this.setState({ watchlist })
       }
-      // Code for localStorage/sessionStorage.
     } else {
       // Sorry! No Web Storage support..
     }
@@ -38,7 +37,7 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
+      <BrowserRouter basename="/petewins/react-final/">
         <div className="App">
           <div className="container">
             <Nav />
@@ -56,8 +55,8 @@ class App extends Component {
                     )}
                   />
                   <Route path="/detail" render={props => (
-                      <Detail watchlist={this.state.watchlist} updateState={this.updateState} />
-                    )} />
+                    <Detail watchlist={this.state.watchlist} updateState={this.updateState} />
+                  )} />
                 </Switch>
               </div>
               <Sidebar
@@ -79,7 +78,7 @@ class App extends Component {
             </p>
           </footer>
         </div>
-      </Router>
+      </BrowserRouter>
     );
   }
 

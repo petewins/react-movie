@@ -49,16 +49,16 @@ class Detail extends Component {
     let watchlist = this.props.watchlist;
     let detail = this.state.detail;
     console.log(watchlist)
-    if (!watchlist.some((movie) => movie.id === detail.id)) {
+    if (watchlist.some((movie) => movie.id === detail.id)) {
+      watchlist = watchlist.filter((movie) => movie.id !== detail.id);
+      this.props.updateState({ watchlist });
+      localStorage.setItem("watchlist", JSON.stringify(watchlist));
+      this.setState({ saved: false })
+    } else {
       watchlist.push({ id: detail.id, title: detail.title, iconClass: "fas fa-star" });
       this.props.updateState({ watchlist });
       localStorage.setItem("watchlist", JSON.stringify(watchlist));
       this.setState({ saved: true })
-    } else {
-      watchlist = watchlist.filter((movie) => detail.id !== movie.id);
-      this.props.updateState({ watchlist });
-      localStorage.setItem("watchlist", JSON.stringify(watchlist));
-      this.setState({ saved: false })
     }
 
   }
