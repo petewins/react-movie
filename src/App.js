@@ -1,27 +1,25 @@
 import React, { Component } from 'react';
 import './App.css';
 import Nav from './Nav';
-import { BrowserRouter as BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Playing from './Playing';
 import Detail from './Detail';
 import Sidebar from './Sidebar';
-
-// let url =
-//   'https://newsapi.org/v2/everything?q=%22in%20theatres%22&apiKey=f6d2d6210efa415387ea117a6c090666&language=en&sortby=publishedAt';
-
+import News from './News';
 class App extends Component {
   state = {
     nowPlaying: [],
     upcoming: [],
-    watchlist: []
+    watchlist: [],
+    articles: []
   };
 
   componentWillMount() {
-    if (typeof (Storage) !== "undefined") {
-      if (localStorage.getItem("watchlist")) {
-        let watchlist = JSON.parse(localStorage.getItem("watchlist"));
-        this.setState({ watchlist })
+    if (typeof Storage !== 'undefined') {
+      if (localStorage.getItem('watchlist')) {
+        let watchlist = JSON.parse(localStorage.getItem('watchlist'));
+        this.setState({ watchlist });
       }
     } else {
       // Sorry! No Web Storage support..
@@ -29,6 +27,9 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.getNews('%22in%20theatres%22').then(({ articles }) =>
+      this.setState({ articles })
+    );
     this.getUpcoming();
     if (!(this.state.nowPlaying.length > 0)) {
       this.getNowPlaying();
@@ -43,7 +44,7 @@ class App extends Component {
             <Nav />
           </div>
 
-          <main role="main" className="container py-3 py-md-5">
+          <main role="main" className="container py-3 py-md-4">
             <div className="row">
               <div className="col-md-8 blog-main">
                 <Switch>
@@ -51,12 +52,22 @@ class App extends Component {
                     exact
                     path="/"
                     render={props => (
-                      <Playing nowPlaying={this.state.nowPlaying} />
+                      <Home
+                        articles={this.state.articles}
+                        nowPlaying={this.state.nowPlaying}
+                      />
                     )}
                   />
-                  <Route path="/detail" render={props => (
-                    <Detail watchlist={this.state.watchlist} updateState={this.updateState} />
-                  )} />
+                  <Route
+                    path="/detail"
+                    render={props => (
+                      <Detail
+                        watchlist={this.state.watchlist}
+                        updateState={this.updateState}
+                        getNews={this.getNews}
+                      />
+                    )}
+                  />
                 </Switch>
               </div>
               <Sidebar
@@ -73,9 +84,7 @@ class App extends Component {
               <a href="https://themoviedb.org/"> themoviedb, </a>
               <a href="https://newsapi.org/"> newsapi </a>.
             </p>
-            <p>
-              {/* <a href="#">Back to top</a> */}
-            </p>
+            <p>{/* <a href="#">Back to top</a> */}</p>
           </footer>
         </div>
       </BrowserRouter>
@@ -84,7 +93,7 @@ class App extends Component {
 
   getUpcoming() {
     let getUpcoming =
-      'https://api.themoviedb.org/3/movie/upcoming?api_key=ea748c83b9eee174d5714961ec938fff&language=en-US&page=1&region=us';
+      'https://api.themoviedb.org/3/movie/upcoming?api_key=ea748c83b9eee174d5714961ec938fff&language=en-US&page=1&region=us&sortBy=relevancy';
     fetch(getUpcoming)
       .then(resp => resp.json())
       .then(movies => {
@@ -101,6 +110,23 @@ class App extends Component {
       });
   }
 
+  getNews = query => {
+    let news = `https://newsapi.org/v2/everything?q=${query}&apiKey=f6d2d6210efa415387ea117a6c090666&language=en&sortby=publishedAt`;
+    return fetch(news)
+      .then(resp => resp.json())
+      .then(data => {
+        let articles = data.articles.map(article => {
+          return {
+            title: article.title,
+            url: article.url,
+            image: article.urlToImage,
+            description: article.description,
+            date: article.publishedAt.slice(0, 9)
+          };
+        });
+        return { articles };
+      });
+  };
   getNowPlaying() {
     let getNowPlaying =
       'https://api.themoviedb.org/3/movie/now_playing?api_key=ea748c83b9eee174d5714961ec938fff&language=en-US&page=1';
@@ -125,5 +151,17 @@ class App extends Component {
     this.setState(state);
   };
 }
+
+const Home = props => (
+  <div>
+    <Playing nowPlaying={props.nowPlaying} />
+    <div className="blog-post">
+      <h2 className="blog-post-title">Top News</h2>
+      <hr />
+      <News articles={props.articles} />
+      <hr />
+    </div>
+  </div>
+);
 
 export default App;

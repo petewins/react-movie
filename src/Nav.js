@@ -71,6 +71,9 @@ class Nav extends Component {
             <Link className="blog-header-logo text-dark" to="/">
               Film Search
             </Link>
+            <Link className="blog-header-logo blog-header-logo-mobile text-dark" to="/">
+              FS
+            </Link>
           </div>
           <div className="col-10 d-flex justify-content-start align-items-left">
             <form

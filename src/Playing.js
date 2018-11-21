@@ -4,10 +4,7 @@ import { Link } from 'react-router-dom';
 
 
 class Playing extends Component {
-  componentWillReceiveProps(nextProps) {
-    // console.log('this: ', this.props);
-    // console.log('next: ', nextProps);
-  }
+
   render() {
     const settings = {
       dots: false,

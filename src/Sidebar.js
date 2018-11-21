@@ -57,7 +57,7 @@ class Sidebar extends Component {
   };
   render() {
     return (
-      <aside className="col-md-4 blog-sidebar">
+      <aside className="col-md-4 mt-5 blog-sidebar">
         <div className="p-3 mb-3 bg-light rounded">
           <h4>Watchlist</h4>
           <ul className="mb-0 list-unstyled">
