@@ -1,56 +1,75 @@
 import React, { Component } from 'react';
 
 class Detail extends Component {
+  state = {
+    detail: {
+      id: null,
+      title: null
+    }
+  };
+
+  componentDidUpdate() {
+    // console.log('updated');
+    // let id = this.props.location.pathname.slice(7).replace(/\//g, '');
+    // if (this.state.detail.id !== id) {
+    //   this.getMovieDetail(id);
+    // }
+  }
+  
+  componentDidMount() {
+    
+    let id = this.props.location.pathname.slice(7).replace(/\//g, '');
+    if (this.state.detail.id !== id) {
+      this.getMovieDetail(id);
+    }
+  }
+
+  getMovieDetail = id => {
+    return fetch(
+      `https://api.themoviedb.org/3/movie/${id}?api_key=ea748c83b9eee174d5714961ec938fff&language=en-US&append_to_response=videos%2Ccredits`
+    )
+      .then(resp => resp.json())
+      .then(movie => {
+        let cast = [];
+        let length =
+          movie.credits.cast.length < 4 ? movie.credits.cast.length : 4;
+        for (let i = 0; i < length; i++) {
+          cast.push(movie.credits.cast[i].name);
+        }
+        let detail = {
+          id: movie.id,
+          title: movie.title,
+          runtime: movie.runtime,
+          rating: movie.vote_average,
+          genre: movie.genres.map(genre => genre.name).join(', '),
+          video:
+            movie.videos.results.length > 0
+              ? movie.videos.results[0].key
+              : null,
+          image: 'https://image.tmdb.org/t/p/w200' + movie.poster_path,
+          overview: movie.overview,
+          cast: cast.join(', ')
+        };
+        this.setState({ detail });
+        console.log(movie, this.state);
+        // return details;
+      });
+  };
+
   render() {
     return (
       <div className="row mb-2">
-        <div className="col-md-6">
-          <div className="card flex-md-row mb-4 shadow-sm h-md-250">
-            <div className="card-body d-flex flex-column align-items-start">
-              <strong className="d-inline-block mb-2 text-primary">
-                WorldWorld
-              </strong>
-              <h3 className="mb-0">
-                <a className="text-dark" href="#">
-                  Featured post
-                </a>
-              </h3>
-              <div className="mb-1 text-muted">Nov 12</div>
-              <p className="card-text mb-auto">
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content.
-              </p>
-              <a href="#">Continue reading</a>
-            </div>
-            <img
-              className="card-img-right flex-auto d-none d-lg-block"
-              data-src="holder.js/200x250?theme=thumb"
-              alt="Card image cap"
-            />
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="card flex-md-row mb-4 shadow-sm h-md-250">
-            <div className="card-body d-flex flex-column align-items-start">
-              <strong className="d-inline-block mb-2 text-success">
-                Design
-              </strong>
-              <h3 className="mb-0">
-                <a className="text-dark" href="#">
-                  Post title
-                </a>
-              </h3>
-              <div className="mb-1 text-muted">Nov 11</div>
-              <p className="card-text mb-auto">
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content.
-              </p>
-              <a href="#">Continue reading</a>
-            </div>
-            <img
-              className="card-img-right flex-auto d-none d-lg-block"
-              data-src="holder.js/200x250?theme=thumb"
-              alt="Card image cap"
+        <div>
+          <div className="youtube-embed">
+            <iframe
+              allowFullScreen="allowFullScreen"
+              src={`https://www.youtube.com/embed/${
+                this.state.detail.video
+              }?ecver=1&amp;iv_load_policy=1&amp;rel=0&amp;showinfo=0&amp;yt:stretch=16:9&amp;autohide=1&amp;color=black&amp;width=560&amp;width=560`}
+              width="560"
+              height="315"
+              allowtransparency="true"
+              frameBorder="0"
             />
           </div>
         </div>
