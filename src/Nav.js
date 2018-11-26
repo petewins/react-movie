@@ -67,7 +67,7 @@ class Nav extends Component {
       // your return
       <header className="blog-header py-3">
         <div className="row flex-nowrap justify-content-between align-items-center">
-          <div className="col-auto ">
+          <div className="logo-main col-auto ">
             <Link className="blog-header-logo text-dark" to="/">
               Film Search
             </Link>
@@ -75,7 +75,7 @@ class Nav extends Component {
               FS
             </Link>
           </div>
-          <div className="col-10 d-flex justify-content-start align-items-left">
+          <div className="search-bar col-10 d-flex justify-content-start align-items-left">
             <form
               onSubmit={this.handleSubmit}
               className="form-inline mt-md-0 w-100"

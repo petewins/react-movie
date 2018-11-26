@@ -155,7 +155,7 @@ class App extends Component {
 const Home = props => (
   <div>
     <Playing nowPlaying={props.nowPlaying} />
-    <div className="blog-post">
+    <div className="top-news blog-post">
       <h2 className="blog-post-title">Top News</h2>
       <hr />
       <News articles={props.articles} />

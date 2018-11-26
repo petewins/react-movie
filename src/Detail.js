@@ -157,7 +157,7 @@ class Detail extends Component {
               </span>
             </div>
           </div>
-          <div className="d-flex bg-dark">
+          <div className="poster-trailer d-flex bg-dark">
             <img
               alt="poster"
               src={movie.image}

@@ -196,9 +196,6 @@ h6 {
   font-size: 1.6rem;
 }
 
-.poster-title {
-  /* display: none; */
-}
 
 .blog-header-logo-mobile {
   display: none;
@@ -219,10 +216,49 @@ h6 {
     display: none;
   }
 }
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 775px) {
   
   .slick-arrow {
     display: none !important;
   }
-  
+
+  .top-news {
+    display: none;
+  }
+  .blog-sidebar {
+    margin-top: 0 !important;
+  }
+
+}
+
+@media only screen and (max-width: 400px) {
+  .poster-trailer {
+    flex-direction: column;
+  }
+  .detail-poster{
+    width: 100% !important;
+    margin: 0 !important;
+    margin-bottom: 10px;
+  }
+  .search-inputbox {
+    width: 300px !important;
+  }
+  .search-bar {
+    padding: 0;
+    flex-basis: 100%;
+  }
+  .logo-main {
+    padding: 0 5px !important;
+    /* padding-left: 10px !important; */
+  }
+
+  .blog-post {
+    margin-bottom: 2rem !important;
+}
+}
+
+@media only screen and (max-width: 375px) {
+.search-inputbox {
+    width: 250px !important;
+  }
 }
