@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 class News extends Component {
 
   addDefaultSrc(ev) {
-    ev.target.src = './assets/images/thumbnail.png'
+    console.log(ev);
+    ev.target.src = 'https://i.imgur.com/NjkZ4eT.png'
   }
 
 
