@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 
 class News extends Component {
+
+  addDefaultSrc(ev) {
+    ev.target.src = './assets/images/thumbnail.png'
+  }
+
+
   render() {
     console.log(this.props);
     let articles = this.props.articles.map((article, index) => {
@@ -8,7 +14,7 @@ class News extends Component {
         return (
           <div key={index} className="row">
             <div className="col-lg-4 pt-2">
-              <img width={'200px'} src={article.image} />
+              <img width={'200px'} src={article.image} onError={this.addDefaultSrc} />
               <p className="blog-post-meta">{article.date}</p>
             </div>
             <div className="col-lg-8">

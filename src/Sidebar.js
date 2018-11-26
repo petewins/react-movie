@@ -69,7 +69,7 @@ class Sidebar extends Component {
         </div>
 
         <div className="p-3">
-          <h4 className="">Opening this week</h4>
+          <h4 className="">Upcoming</h4>
           <ol className="list-unstyled mb-0">
             <Upcoming
               upcoming={this.props.upcoming}

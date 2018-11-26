@@ -20,11 +20,11 @@ class Nav extends Component {
   }
 
   handleChange = event => {
-      let movie = event[0];
-      if (movie) {
-        this.props.history.push('/detail/' + movie.id);
-      }
-    };
+    let movie = event[0];
+    if (movie) {
+      this.props.history.push('/detail/' + movie.id);
+    }
+  };
 
   handleInputChange = event => {
     console.log(event);
@@ -98,15 +98,7 @@ class Nav extends Component {
                   )}
                 />
               </Fragment>
-              {/* <input
-                className="form-control w-75 "
-                type="text"
-                placeholder="Search"
-                aria-label="Search"
-                onChange={this.handleChange}
-                value={this.state.searchInput}
-              /> */}
-              <Link
+              {/* <Link
                 className="text-muted"
                 to={'/search/' + this.state.searchInput}
               >
@@ -125,7 +117,7 @@ class Nav extends Component {
                   <circle cx="10.5" cy="10.5" r="7.5" />
                   <line x1="21" y1="21" x2="15.8" y2="15.8" />
                 </svg>
-              </Link>
+              </Link> */}
             </form>
           </div>
         </div>
