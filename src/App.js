@@ -38,7 +38,7 @@ class App extends Component {
 
   render() {
     return (
-      <HashRouter basename="/petewins/react-final/">
+      <HashRouter>
         <div className="App">
           <div className="container">
             <Nav />
