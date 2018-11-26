@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Nav from './Nav';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 
 import Playing from './Playing';
 import Detail from './Detail';
@@ -38,7 +38,7 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter basename="/petewins/react-final/">
+      <HashRouter basename="/petewins/react-final/">
         <div className="App">
           <div className="container">
             <Nav />
@@ -87,7 +87,7 @@ class App extends Component {
             <p>{/* <a href="#">Back to top</a> */}</p>
           </footer>
         </div>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 
