@@ -2,7 +2,7 @@
   "name": "final-proj",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://pages.git.generalassemb.ly/petewins/react-final/",
+  "homepage": "https://films-search.firebaseapp.com/",
   "dependencies": {
     "react": "^16.6.3",
     "react-bootstrap-typeahead": "^3.2.4",

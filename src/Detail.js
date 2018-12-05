@@ -164,7 +164,7 @@ class Detail extends Component {
               className="mr-2 detail-poster"
             />
             <div
-              className="text-light"
+              className="trailer text-light"
               style={{ width: '100%', height: '100%' }}
             >
               {youtube}
