@@ -2,18 +2,45 @@ import React, { Component } from 'react';
 import './App.css';
 import Nav from './Nav';
 import { HashRouter, Route, Switch } from 'react-router-dom';
+import firebase, { auth, provider } from './firebase.js';
 
 import Playing from './Playing';
 import Detail from './Detail';
 import Sidebar from './Sidebar';
 import News from './News';
+
 class App extends Component {
-  state = {
-    nowPlaying: [],
-    upcoming: [],
-    watchlist: [],
-    articles: []
-  };
+  constructor() {
+    super();
+    this.state = {
+      nowPlaying: [],
+      upcoming: [],
+      watchlist: [],
+      articles: [],
+      user: null
+    };
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
+  }
+
+  login() {
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        this.setState({
+          user
+        });
+      });
+  }
+
+  logout() {
+    auth.signOut()
+    .then(() => {
+      this.setState({
+        user: null
+      });
+    });
+  }
 
   componentWillMount() {
     if (typeof Storage !== 'undefined') {
@@ -27,6 +54,14 @@ class App extends Component {
   }
 
   componentDidMount() {
+    //is user logged in?
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user });
+      }
+    });
+
+    //get news
     this.getNews('%22in%20theatres%22').then(({ articles }) =>
       this.setState({ articles })
     );
@@ -41,6 +76,24 @@ class App extends Component {
       <HashRouter>
         <div className="App">
           <div className="container">
+            <div className="wrapper">
+              {this.state.user ?
+                <div>
+                  <div className='user-profile'>
+                    <img src={this.state.user.photoURL} />
+                  </div>
+                </div>
+                :
+                <div className='wrapper'>
+                  <p>UI</p>
+                </div>
+              }
+              {this.state.user ?
+                <button onClick={this.logout}>Log Out</button>
+                :
+                <button onClick={this.login}>Log In</button>
+              }
+            </div>
             <Nav />
           </div>
 
